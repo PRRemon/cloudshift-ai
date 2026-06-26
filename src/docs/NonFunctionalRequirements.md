@@ -1,0 +1,8 @@
+Authentication
+Security
+Scalability
+Availability
+Audit Logging
+Performance
+Monitoring
+Maintainability
