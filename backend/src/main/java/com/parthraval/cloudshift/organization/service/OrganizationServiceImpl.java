@@ -6,6 +6,8 @@ import com.parthraval.cloudshift.organization.dto.CreateOrganizationRequest;
 import com.parthraval.cloudshift.organization.dto.OrganizationResponse;
 import com.parthraval.cloudshift.organization.entity.Organization;
 import com.parthraval.cloudshift.organization.repository.OrganizationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.UUID;
 //@RequiredArgsConstructor
 public class OrganizationServiceImpl
         implements OrganizationService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(OrganizationServiceImpl.class);
 
     private final OrganizationRepository organizationRepository;
 
@@ -26,8 +31,12 @@ public class OrganizationServiceImpl
     public OrganizationResponse createOrganization(
             CreateOrganizationRequest request
     ) {
-
+        log.info("Creating organization with name={}", request.name());
         if (organizationRepository.existsByNameIgnoreCase(request.name())) {
+            log.warn(
+                    "Organization already exists. name={}",
+                    request.name()
+            );
             throw new BusinessException("Organization already exists.");
         }
 
@@ -38,7 +47,11 @@ public class OrganizationServiceImpl
 
         Organization saved =
                 organizationRepository.save(organization);
-
+        log.info(
+                "Organization created successfully. id={}, name={}",
+                saved.getId(),
+                saved.getName()
+        );
         return new OrganizationResponse(
                 saved.getId(),
                 saved.getName(),
@@ -51,13 +64,18 @@ public class OrganizationServiceImpl
 
     @Override
     public OrganizationResponse getOrganizationById(UUID id) {
+        log.info("Fetching organization. id={}", id);
 
         Organization organization = organizationRepository
                 .findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Organization not found with id: " + id
-                        ));
+                .orElseThrow(() -> {
+
+                    log.warn("Organization not found. id={}", id);
+
+                    return new ResourceNotFoundException(
+                            "Organization not found with id: " + id
+                    );
+                });
 
         return new OrganizationResponse(
                 organization.getId(),
@@ -85,7 +103,10 @@ public class OrganizationServiceImpl
 
     @Override
     public void deleteOrganization(UUID id) {
-
+        log.info(
+                "Deleting organization id={}",
+                id
+        );
         Organization organization = organizationRepository
                 .findById(id)
                 .orElseThrow(() ->
@@ -93,6 +114,10 @@ public class OrganizationServiceImpl
                                 "Organization not found with id: " + id
                         ));
 
+        log.info(
+                "Organization deleted successfully. id={}",
+                id
+        );
         organizationRepository.delete(organization);
     }
 }

@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/organizations")
 public class OrganizationController {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(OrganizationController.class);
 
     private final OrganizationService organizationService;
 
@@ -54,10 +59,11 @@ public class OrganizationController {
     @PostMapping
     public ResponseEntity<ApiResponse<OrganizationResponse>> createOrganization(
             @Valid @RequestBody CreateOrganizationRequest request) {
-
+        log.info("Received request to create organization. name={}", request.name());
         OrganizationResponse response =
                 organizationService.createOrganization(request);
 
+        log.info("Successfully processed create organization request.");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(
@@ -86,10 +92,10 @@ public class OrganizationController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrganizationResponse>> getOrganizationById(
             @PathVariable UUID id) {
-
+        log.info("Received request to fetch organization. id={}", id);
         OrganizationResponse response =
                 organizationService.getOrganizationById(id);
-
+        log.info("Successfully retrieved organization. id={}", id);
         return ResponseEntity.ok(
                 ApiResponse.success(
                         "Organization retrieved successfully",
@@ -114,9 +120,11 @@ public class OrganizationController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrganizationResponse>>> getAllOrganizations() {
 
+        log.info("Received request to fetch all organizations.");
         List<OrganizationResponse> organizations =
                 organizationService.getAllOrganizations();
 
+        log.info("Retrieved {} organizations.", organizations.size());
         return ResponseEntity.ok(
                 ApiResponse.success(
                         "Organizations retrieved successfully",
@@ -145,9 +153,9 @@ public class OrganizationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrganization(
             @PathVariable UUID id) {
-
+        log.info("Received request to delete organization. id={}", id);
         organizationService.deleteOrganization(id);
-
+        log.info("Delete organization request completed successfully. id={}", id);
         return ResponseEntity.noContent().build();
     }
 }
