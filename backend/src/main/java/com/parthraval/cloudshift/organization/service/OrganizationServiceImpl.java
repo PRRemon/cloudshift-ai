@@ -1,11 +1,14 @@
 package com.parthraval.cloudshift.organization.service;
 
 import com.parthraval.cloudshift.common.exception.BusinessException;
+import com.parthraval.cloudshift.common.exception.ResourceNotFoundException;
 import com.parthraval.cloudshift.organization.dto.CreateOrganizationRequest;
 import com.parthraval.cloudshift.organization.dto.OrganizationResponse;
 import com.parthraval.cloudshift.organization.entity.Organization;
 import com.parthraval.cloudshift.organization.repository.OrganizationRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 //@RequiredArgsConstructor
@@ -43,6 +46,25 @@ public class OrganizationServiceImpl
                 saved.getUpdatedAt()
         );
 
+    }
+
+    @Override
+    public OrganizationResponse getOrganizationById(UUID id) {
+
+        Organization organization = organizationRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Organization not found with id: " + id
+                        ));
+
+        return new OrganizationResponse(
+                organization.getId(),
+                organization.getName(),
+                organization.getDescription(),
+                organization.getCreatedAt(),
+                organization.getUpdatedAt()
+        );
     }
 
 }

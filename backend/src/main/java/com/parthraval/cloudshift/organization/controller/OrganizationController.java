@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/organizations")
 public class OrganizationController {
@@ -32,5 +34,20 @@ public class OrganizationController {
                         "Organization created successfully",
                         response
                 ));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<OrganizationResponse>> getOrganizationById(
+            @PathVariable UUID id) {
+
+        OrganizationResponse response =
+                organizationService.getOrganizationById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Organization retrieved successfully",
+                        response
+                )
+        );
     }
 }

@@ -52,4 +52,23 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(response);
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(
+                false,
+                404,
+                "Not Found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                List.of(),
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(response);
+    }
 }
