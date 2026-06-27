@@ -1,3 +1,36 @@
 spring:
   application:
-    name: cloudshift-backend
+    name: cloudshift-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cloudshift
+    username: cloudshift
+    password: cloudshift
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app:
+    name: CloudShift AI
+    version: 0.0.1
