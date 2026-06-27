@@ -3,6 +3,7 @@ package com.parthraval.cloudshift.organization.service;
 import com.parthraval.cloudshift.organization.dto.CreateOrganizationRequest;
 import com.parthraval.cloudshift.organization.dto.OrganizationResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface OrganizationService {
@@ -12,5 +13,9 @@ public interface OrganizationService {
     );
 
     OrganizationResponse getOrganizationById(UUID id);
+
+    List<OrganizationResponse> getAllOrganizations();
+
+    void deleteOrganization(UUID id);
 
 }

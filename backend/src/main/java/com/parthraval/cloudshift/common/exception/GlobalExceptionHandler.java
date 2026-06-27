@@ -1,9 +1,11 @@
 package com.parthraval.cloudshift.common.exception;
 
 import com.parthraval.cloudshift.common.dto.ErrorResponse;
+import com.parthraval.cloudshift.common.dto.ValidationError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -38,19 +40,15 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
 
-        ErrorResponse response = new ErrorResponse(
-                false,
-                409,
-                "Conflict",
-                ex.getMessage(),
-                request.getRequestURI(),
-                List.of(),
-                Instant.now()
-        );
-
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(response);
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(
+                        buildErrorResponse(
+                                HttpStatus.CONFLICT,
+                                ex.getMessage(),
+                                request.getRequestURI(),
+                                List.of()
+                        )
+                );
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -58,17 +56,56 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException ex,
             HttpServletRequest request) {
 
-        ErrorResponse response = new ErrorResponse(
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(
+                        buildErrorResponse(
+                                HttpStatus.NOT_FOUND,
+                                ex.getMessage(),
+                                request.getRequestURI(),
+                                List.of()
+                        )
+                );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
+
+        List<ValidationError> validationErrors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> new ValidationError(
+                        error.getField(),
+                        error.getDefaultMessage()
+                ))
+                .toList();
+
+        return ResponseEntity.badRequest()
+                .body(
+                        buildErrorResponse(
+                                HttpStatus.BAD_REQUEST,
+                                "Request validation failed.",
+                                request.getRequestURI(),
+                                validationErrors
+                        )
+                );
+    }
+
+    private ErrorResponse buildErrorResponse(
+            HttpStatus status,
+            String message,
+            String path,
+            List<ValidationError> details) {
+
+        return new ErrorResponse(
                 false,
-                404,
-                "Not Found",
-                ex.getMessage(),
-                request.getRequestURI(),
-                List.of(),
+                status.value(),
+                status.getReasonPhrase(),
+                message,
+                path,
+                details,
                 Instant.now()
         );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(response);
     }
 }

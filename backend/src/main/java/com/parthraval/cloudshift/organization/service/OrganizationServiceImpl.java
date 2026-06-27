@@ -8,6 +8,7 @@ import com.parthraval.cloudshift.organization.entity.Organization;
 import com.parthraval.cloudshift.organization.repository.OrganizationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -67,4 +68,31 @@ public class OrganizationServiceImpl
         );
     }
 
+    @Override
+    public List<OrganizationResponse> getAllOrganizations() {
+
+        return organizationRepository.findAll()
+                .stream()
+                .map(organization -> new OrganizationResponse(
+                        organization.getId(),
+                        organization.getName(),
+                        organization.getDescription(),
+                        organization.getCreatedAt(),
+                        organization.getUpdatedAt()
+                ))
+                .toList();
+    }
+
+    @Override
+    public void deleteOrganization(UUID id) {
+
+        Organization organization = organizationRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Organization not found with id: " + id
+                        ));
+
+        organizationRepository.delete(organization);
+    }
 }

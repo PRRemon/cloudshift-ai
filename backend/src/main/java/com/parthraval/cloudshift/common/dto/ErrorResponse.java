@@ -15,7 +15,7 @@ public record ErrorResponse(
 
         String path,
 
-        List<String> details,
+        List<ValidationError> details,
 
         Instant timestamp
 
@@ -26,7 +26,7 @@ public record ErrorResponse(
             String error,
             String message,
             String path,
-            List<String> details
+            List<ValidationError> details
     ) {
 
         return new ErrorResponse(
