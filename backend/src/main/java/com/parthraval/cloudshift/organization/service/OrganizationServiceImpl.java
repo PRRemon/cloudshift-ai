@@ -1,5 +1,6 @@
 package com.parthraval.cloudshift.organization.service;
 
+import com.parthraval.cloudshift.common.exception.BusinessException;
 import com.parthraval.cloudshift.organization.dto.CreateOrganizationRequest;
 import com.parthraval.cloudshift.organization.dto.OrganizationResponse;
 import com.parthraval.cloudshift.organization.entity.Organization;
@@ -21,6 +22,10 @@ public class OrganizationServiceImpl
     public OrganizationResponse createOrganization(
             CreateOrganizationRequest request
     ) {
+
+        if (organizationRepository.existsByNameIgnoreCase(request.name())) {
+            throw new BusinessException("Organization already exists.");
+        }
 
         Organization organization = new Organization();
 

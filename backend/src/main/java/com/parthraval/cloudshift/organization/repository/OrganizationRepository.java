@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface OrganizationRepository
         extends JpaRepository<Organization, UUID> {
+
+    boolean existsByNameIgnoreCase(String name);
 }
