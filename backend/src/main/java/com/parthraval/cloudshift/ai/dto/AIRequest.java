@@ -7,13 +7,27 @@ import lombok.Setter;
 @Setter
 public class AIRequest {
 
-    private String prompt;
+    private String applicationName;
 
-    public String getPrompt() {
-        return prompt;
-    }
+    private String applicationType;
 
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
-    }
+    private String language;
+
+    private String framework;
+
+    private String database;
+
+    private Integer serverCount;
+
+    private Integer monthlyUsers;
+
+    private Integer storageGb;
+
+    private String trafficPattern;
+
+    private String currentHosting;
+
+    private String additionalRequirements;
+
+
 }

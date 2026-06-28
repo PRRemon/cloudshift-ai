@@ -27,10 +27,11 @@ public class BedrockProvider implements AIProvider {
     @Override
     public AIResponse generate(AIRequest request) {
 
+        String prompt = buildPrompt(request);
         Message userMessage = Message.builder()
                 .role("user")
                 .content(ContentBlock.builder()
-                        .text(request.getPrompt())
+                        .text(prompt)
                         .build())
                 .build();
 
@@ -60,5 +61,62 @@ public class BedrockProvider implements AIProvider {
         aiResponse.setTokensUsed(tokens);
 
         return aiResponse;
+    }
+
+    private String buildPrompt(AIRequest request) {
+
+        return """
+                You are an AWS Solutions Architect.
+                
+                Analyze the following application.
+                
+                Application Name: %s
+                
+                Application Type: %s
+                
+                Language: %s
+                
+                Framework: %s
+                
+                Database: %s
+                
+                Servers: %d
+                
+                Monthly Users: %d
+                
+                Storage: %d GB
+                
+                Traffic Pattern: %s
+                
+                Current Hosting: %s
+                
+                Additional Requirements:
+                %s
+                
+                Recommend:
+                
+                1. Compute
+                2. Database
+                3. Storage
+                4. Networking
+                5. Security
+                6. Estimated Monthly Cost
+                7. Migration Complexity
+                
+                Return the answer in markdown.
+                """
+                .formatted(
+                        request.getApplicationName(),
+                        request.getApplicationType(),
+                        request.getLanguage(),
+                        request.getFramework(),
+                        request.getDatabase(),
+                        request.getServerCount(),
+                        request.getMonthlyUsers(),
+                        request.getStorageGb(),
+                        request.getTrafficPattern(),
+                        request.getCurrentHosting(),
+                        request.getAdditionalRequirements());
+
     }
 }
