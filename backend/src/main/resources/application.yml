@@ -1,11 +1,12 @@
 spring:
   application:
     name: cloudshift-api
-
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
-    url: jdbc:postgresql://localhost:5432/cloudshift
-    username: cloudshift
-    password: cloudshift
+    url: jdbc:postgresql://cloudshift-db.cdi088m40cgs.ap-south-1.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: postgresraval
     driver-class-name: org.postgresql.Driver
 
   jpa:
