@@ -1,0 +1,46 @@
+services:
+
+  postgres:
+    image: postgres:17
+
+    container_name: cloudshift-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: cloudshift
+      POSTGRES_USER: cloudshift
+      POSTGRES_PASSWORD: cloudshift
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cloudshift -d cloudshift" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cloudshift-api:
+    build:
+      context: ../../backend
+
+    container_name: cloudshift-api
+
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

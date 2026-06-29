@@ -1,34 +1,56 @@
 # CloudShift AI
 
-> Enterprise Cloud Migration & Modernization Platform
+Enterprise Cloud Migration & Modernization Platform
 
-## Vision
+## Architecture
 
-CloudShift AI helps organizations assess, plan, and migrate workloads from on-premise infrastructure to AWS.
+(image)
+
+## Features
+
+- Authentication
+- Organizations
+- Projects
+- Inventory Upload
+- AWS Recommendation Engine
+- AI Assistant
 
 ## Tech Stack
 
-- Java 26
-- Spring Boot (coming next)
-- Maven
-- PostgreSQL
-- Docker
-- AWS
-- Kafka
-- Terraform
-- GitHub Actions
-- Spring AI
+Java 26
+Spring Boot
+PostgreSQL
+Docker
+AWS
+Kafka
+Terraform
+Spring AI
 
-## Project Status
+## Project Roadmap
 
-🚧 Sprint 0 - Project Initialization
+Sprint 0 ✅
+Sprint 1 ✅
+Sprint 2 ✅
+Sprint 3 
 
-## Roadmap
+## Features
 
-- [ ] Authentication
-- [ ] Organization Management
-- [ ] Project Management
-- [ ] Infrastructure Inventory
-- [ ] AWS Recommendation Engine
-- [ ] Cost Estimator
-- [ ] AI Assistant
+- Assessment Management
+- AI-powered Cloud Recommendations
+- Amazon Bedrock Integration
+- PostgreSQL Persistence
+- Flyway Database Migrations
+- REST APIs with Swagger
+- Docker Support
+- AWS ECS & RDS Deployment
+
+Assessment
+│
+▼
+Amazon Bedrock
+│
+▼
+Recommendation
+│
+▼
+PostgreSQL
