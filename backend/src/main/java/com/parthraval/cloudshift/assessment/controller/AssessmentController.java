@@ -3,6 +3,8 @@ package com.parthraval.cloudshift.assessment.controller;
 import com.parthraval.cloudshift.assessment.dto.AssessmentRequest;
 import com.parthraval.cloudshift.assessment.dto.AssessmentResponse;
 import com.parthraval.cloudshift.assessment.service.AssessmentService;
+import com.parthraval.cloudshift.recommendation.dto.RecommendationResponse;
+import com.parthraval.cloudshift.recommendation.service.RecommendationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class AssessmentController {
 
     private final AssessmentService assessmentService;
+    private final RecommendationService recommendationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -45,5 +48,11 @@ public class AssessmentController {
         assessmentService.delete(id);
     }
 
+    @PostMapping("/{id}/generate-recommendation")
+    public RecommendationResponse generateRecommendation(
+            @PathVariable UUID id) {
+
+        return recommendationService.generateRecommendation(id);
+    }
 
 }
