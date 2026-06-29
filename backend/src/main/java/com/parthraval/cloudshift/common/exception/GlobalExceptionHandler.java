@@ -126,4 +126,25 @@ public class GlobalExceptionHandler {
                 Instant.now()
         );
     }
+
+    @ExceptionHandler(AIException.class)
+    public ResponseEntity<ErrorResponse> handleAIException(
+            AIException ex,
+            HttpServletRequest request) {
+
+        log.error("AI processing failed", ex);
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ErrorResponse.of(
+                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                                "AI Processing Error",
+                                ex.getMessage(),
+                                request.getRequestURI(),
+                                List.of()
+                        )
+                );
+    }
+
 }

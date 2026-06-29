@@ -5,21 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendationResponse {
-
-    private UUID id;
-
-    private UUID assessmentId;
-
-    private String provider;
+public class RecommendationResult {
 
     private String compute;
 
@@ -36,9 +28,4 @@ public class RecommendationResponse {
     private List<String> securityRecommendations;
 
     private List<String> risks;
-
-    private Integer tokensUsed;
-
-    private Instant createdAt;
-
 }

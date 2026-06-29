@@ -25,8 +25,24 @@ public class Recommendation {
     @Column(nullable = false)
     private String provider;
 
+    private String compute;
+
+    @Column(name = "database_name")
+    private String database;
+
+    private String storage;
+
+    private String networking;
+
+    private String estimatedMonthlyCost;
+
+    private String migrationComplexity;
+
     @Column(columnDefinition = "TEXT")
-    private String recommendation;
+    private String securityRecommendations;
+
+    @Column(columnDefinition = "TEXT")
+    private String risks;
 
     @Column(columnDefinition = "TEXT")
     private String rawAiResponse;
@@ -34,4 +50,5 @@ public class Recommendation {
     private Integer tokensUsed;
 
     private Instant createdAt;
+
 }

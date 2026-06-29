@@ -32,3 +32,25 @@ Sprint 0 ✅
 Sprint 1 ✅
 Sprint 2 ✅
 Sprint 3 
+
+## Features
+
+- Assessment Management
+- AI-powered Cloud Recommendations
+- Amazon Bedrock Integration
+- PostgreSQL Persistence
+- Flyway Database Migrations
+- REST APIs with Swagger
+- Docker Support
+- AWS ECS & RDS Deployment
+
+Assessment
+│
+▼
+Amazon Bedrock
+│
+▼
+Recommendation
+│
+▼
+PostgreSQL
